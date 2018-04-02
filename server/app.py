@@ -42,7 +42,7 @@ DATASETS = {}
 
 app = Flask(__name__)
 
-redis_con = redis.StrictRedis(host='localhost')
+redis_con = redis.StrictRedis(host='redis')
 redis_con.flushdb()
 
 def load_datasets() -> None:
