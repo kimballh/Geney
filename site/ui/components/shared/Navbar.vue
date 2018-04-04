@@ -13,7 +13,7 @@
       </div>
 
       <b-navbar-brand class="above-breadcrumbs" to="/">
-        <span>Geney</span>
+        Geney
       </b-navbar-brand>
       <b-navbar-nav class="above-breadcrumbs ml-auto">
         <b-nav-item to="/about" class="pr-2">About</b-nav-item>
@@ -73,7 +73,9 @@ import router from '../../router';
 export default {
   name: 'navbar',
   data () {
-    return { };
+    return {
+      staticPages: ['About', 'Contact', 'DatasetNotFound'],
+    };
   },
   computed: {
     breadcrumbs () {
@@ -139,7 +141,6 @@ export default {
       }
       return [];
     },
-    staticPages: (Array) => ['About', 'Contact', 'DatasetNotFound'],
   },
   methods: {
     logout () {
@@ -178,6 +179,7 @@ export default {
 .navbar-brand {
   text-align: left;
   display: inline;
+  color: white;
   img {
       height: 50px;
       margin-top: -15px;
@@ -220,11 +222,13 @@ div.nav-item.center-nav {
   height: 40px;
 
   ol.breadcrumb {
+    text-align: left;
     display: inline-block;
     padding: 0.5em 0.5em;
     margin-bottom: 0px;
     background-color: transparent;
     li.breadcrumb-item {
+      display: inline-block;
       &::before {
         color: white;
       }
