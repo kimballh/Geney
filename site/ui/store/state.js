@@ -15,4 +15,6 @@ export default {
     features: null,
     variables: null,
   },
+  wbData: null,
+  wbReport: null,
 };

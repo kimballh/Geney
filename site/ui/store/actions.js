@@ -2,6 +2,22 @@ import Vue from 'vue';
 import router from '../router';
 
 export default {
+  getWishBuilder (context) {
+    Vue.http.get('/api/wishbuilder/pulls').then(response => {
+      const datasets = response.data;
+      context.commit('wbData', datasets);
+    }, response => {
+      context.commit('wbData', []);
+    });
+  },
+  getReport (context, sha) {
+    Vue.http.get('/api/wishbuilder/pulls/' + sha).then(response => {
+      const datasets = response.data;
+      context.commit('wbReport', datasets);
+    }, response => {
+      context.commit('wbReport', {});
+    });
+  },
   getDatasets (context) {
     Vue.http.get('/api/datasets').then(response => {
       const datasets = response.data;

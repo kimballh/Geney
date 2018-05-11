@@ -13,16 +13,24 @@ from responders.TsvResponse import TsvResponse
 from responders.JsonResponse import JsonResponse
 from data_access.Dataset import GeneyDataset
 from data_access.Query import Query
+from data_access.WishbuilderDao import SqliteDao, PullRequest
 
 DATA_PATH = os.getenv('GENEY_DATA_PATH', '')
 if not DATA_PATH:
     print('"GENEY_DATA_PATH" environment variable not set!', flush=True)
     sys.exit(1)
 
+WB_DB = os.getenv('WB_DB', '')
+if not WB_DB:
+    print('"WB_DB" environment variable not set!', flush=True)
+    sys.exit(1)
+
 URL = os.getenv('GENEY_URL', '')
 if not URL:
     print('"GENEY_URL" environment variable not set!', flush=True)
     sys.exit(1)
+
+wb_dao = SqliteDao(WB_DB)
 
 RESPONDERS = {
     'tsv': TsvResponse,
@@ -220,6 +228,38 @@ def use_link(dataset_id, query_hash):
         return CsvResponse(dataset, query, False)
     except Exception:
         return bad_request()
+
+@app.route('/api/wishbuilder/pulls/', strict_slashes=False, methods=['GET'])
+def load_prs():
+    prs = wb_dao.get_all(True)
+    if len(prs) == 0:
+        return not_found('no data')
+    else:
+        response = []
+        for pr in prs:
+            test = {
+                'pr': pr.pr,
+                'branch': pr.branch,
+                'date': pr.date,
+                'e_date': pr.e_date,
+                'feature_variables': pr.feature_variables,
+                'meta_variables': pr.meta_variables,
+                'samples': pr.num_samples,
+                'sha': pr.sha,
+                'time_elapsed': pr.time_elapsed,
+                'user': pr.user,
+                'status': pr.status,
+            }
+            response.append(test)
+        return jsonify(response)
+
+@app.route('/api/wishbuilder/pulls/<string:sha>', strict_slashes=False, methods=['GET'])
+def get_reports(sha):
+    pr = wb_dao.get_pr(sha)
+    if not pr:
+        return not_found('no data')
+    else:
+        return jsonify({'markdown': pr.get_report_markdown(), 'html': pr.get_report_html()})
 
 def not_found(error='not found'):
     return make_response(jsonify({'error': "not found"}), 404)

@@ -41,6 +41,16 @@ export default new Router({
       name: 'Download',
       component: Components.Download,
     },
+    {
+      path: '/wishbuilder',
+      name: 'WishBuilder',
+      component: Components.Datasets,
+    },
+    {
+      path: '/wishbuilder/report/:sha/',
+      name: 'Test Results',
+      component: Components.Report,
+    },
     // {
     //   path: '/login',
     //   name: 'Login',

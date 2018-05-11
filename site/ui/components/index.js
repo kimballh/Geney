@@ -6,6 +6,8 @@ module.exports = {
   Error404: require('./main/Error404'),
   About: require('./main/About'),
   Contact: require('./main/Contact'),
+  Datasets: require('./wishbuilder/Datasets'),
+  Report: require('./wishbuilder/Report'),
   // The below components are disabled until we have need for the admin login
   // Login: require('./main/Login'),
   // Admin: require('./admin/Admin'),

@@ -22,6 +22,7 @@
     "express-jwt-permissions": "^1.0.0",
     "jsonwebtoken": "^7.3.0",
     "morgan": "^1.8.2",
+    "prismjs": "^1.14.0",
     "sqlite3": "^3.1.8"
   },
   "devDependencies": {

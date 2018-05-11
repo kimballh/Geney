@@ -2,6 +2,12 @@ export default {
   metaData (state, value) {
     state.metaData = value;
   },
+  wbData (state, value) {
+    state.wbData = value;
+  },
+  wbReport (state, value) {
+    state.wbReport = value;
+  },
   filters (state, value) {
     state.filters = value;
     if (state.filters) {
