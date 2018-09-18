@@ -2,10 +2,10 @@ import h5py
 from typing import List, Dict, Any
 
 # import UseParquet as ss
-from ShapeShifter.ShapeShifter.ShapeShifter import ShapeShifter
-from ShapeShifter.ShapeShifter.OperatorEnum import OperatorEnum
-from ShapeShifter.ShapeShifter.ContinuousQuery import ContinuousQuery
-from ShapeShifter.ShapeShifter.DiscreteQuery import DiscreteQuery
+from ShapeShifter import ShapeShifter
+from OperatorEnum import OperatorEnum
+from ContinuousQuery import ContinuousQuery
+from DiscreteQuery import DiscreteQuery
 from .Constants import *
 from .Query import Query
 import os
