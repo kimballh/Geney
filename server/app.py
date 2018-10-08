@@ -163,6 +163,13 @@ def search_group(dataset_id, group_name, search_str=None):
 	return jsonify(dataset.search_group(group_name, search_str))
 
 
+@app.route('/api/datasets/<string:dataset_id>/gene_sets', strict_slashes=False)
+def get_gene_sets(dataset_id):
+	dataset = get_dataset(dataset_id)
+	if dataset is None:
+		return not_found()
+	return jsonify(dataset.get_gene_sets())
+
 @app.route('/api/datasets/<string:dataset_id>/options', strict_slashes=False)
 @app.route('/api/datasets/<string:dataset_id>/options/<string:variable_name>', strict_slashes=False)
 def get_options(dataset_id, variable_name=None):

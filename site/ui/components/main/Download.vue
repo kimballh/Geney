@@ -70,17 +70,17 @@
                 :settings="getSelectizeSettings(group)"
                 :errorMessage="'Please select some features or click \'Download all (' + group +')\''"
                 :id="group + '-feature-select'"></selectize>
-              <!-- <div v-if="geneSets !== null && Object.keys(geneSets).length > 0">
+              <div v-if="geneSets !== null && Object.keys(geneSets).length > 0 && geneSets[group]">
                 <selectize
-                  :options="geneSets"
+                  :options="geneSetOptions(group)"
                   :value="selectedSets"
                   @updated="updateSets"
                   :placeholder="$options.filters.capitalize(dataset.featureDescription) + ' Sets - begin typing to see more results'"
                   :settings="{}"
                   id="feature-select"></selectize>
-                  *Information about gene sets can be found on the Pathway Commons <a href="http://www.pathwaycommons.org/" target="_blank">website</a>.
-                  <h5>Total Number of {{ dataset.featureDescriptionPlural | capitalize }} Selected: {{ numFeatures }}</h5>
-              </div> -->
+                  <!-- *Information about gene sets can be found on the Pathway Commons <a href="http://www.pathwaycommons.org/" target="_blank">website</a>.
+                  <h5>Total Number of {{ dataset.featureDescriptionPlural | capitalize }} Selected: {{ numFeatures }}</h5> -->
+              </div>
             </div>
           </div>
 
@@ -222,6 +222,7 @@ export default {
         name: '',
         checked: [],
       },
+      geneSets: {},
     };
   },
   computed: {
@@ -240,22 +241,22 @@ export default {
     groups () {
       return this.$store.state.groups;
     },
-    geneSets () {
-      if (this.metaData.geneSets) {
-        var options = Object.keys(this.metaData.geneSets);
-        const items = options.map(item => {
-          return {name: item};
-        });
-        for (var set in items) {
-          var numGenes = this.metaData.geneSets[items[set]['name']]['genes'].length;
-          items[set]['name'] = items[set]['name'] + ' (' + numGenes + ')';
-          // console.log(numGenes);
-        }
-        return items;
-      } else {
-        return null;
-      }
-    },
+    // geneSets () {
+    //   if (this.metaData.geneSets) {
+    //     var options = Object.keys(this.metaData.geneSets);
+    //     const items = options.map(item => {
+    //       return {name: item};
+    //     });
+    //     for (var set in items) {
+    //       var numGenes = this.metaData.geneSets[items[set]['name']]['genes'].length;
+    //       items[set]['name'] = items[set]['name'] + ' (' + numGenes + ')';
+    //       // console.log(numGenes);
+    //     }
+    //     return items;
+    //   } else {
+    //     return null;
+    //   }
+    // },
     filters () {
       return this.$store.state.filters;
     },
@@ -418,8 +419,26 @@ export default {
         this.$set(this, 'numSamples', -1);
       });
     }
+
+    this.$http.get(`/api/datasets/${this.$route.params.dataset}/gene_sets`).then(response => {
+      this.geneSets = response.data;
+    }, response => {
+      this.geneSets = {};
+    });
   },
   methods: {
+    geneSetOptions (group) {
+      var options = Object.keys(this.geneSets[group]);
+      const items = options.map(item => {
+        return {name: item};
+      });
+      // for (var set in items) {
+      //   var numGenes = this.metaData.geneSets[items[set]['name']]['genes'].length;
+      //   items[set]['name'] = items[set]['name'] + ' (' + numGenes + ')';
+      //   // console.log(numGenes);
+      // }
+      return items;
+    },
     getNumDataPoints () {
       var filteredFeatures = this.getFilteredFeatures();
       filteredFeatures.num_samples = this.numSamples;

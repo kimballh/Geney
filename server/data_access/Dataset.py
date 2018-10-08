@@ -135,6 +135,14 @@ class GeneyDataset:
 			else:  # they added no filters so all sample ids "match"
 				return set(dao.get_all_sample_ids())
 
+	def get_gene_sets(self):
+		with open(self.metadata_path, 'rb') as fp:
+			metadata = pickle.load(fp)
+		if 'gene_sets' in metadata.keys():
+			return metadata['gene_sets']
+		else:
+			return {}
+
 	def query(self, query_json, file_format, gzip_output, download_location, filename=None):
 		query = Query(query_json, self.description)
 		features = []
